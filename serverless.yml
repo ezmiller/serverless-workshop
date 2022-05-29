@@ -37,4 +37,7 @@ resources:
             AttributeType: S
         KeySchema:
           - AttributeName: name
-            KeyType: HAS
+            KeyType: HASH
+  Outputs:
+    RestaurantsTableName:
+      Value: !Ref RestaurantsTable
