@@ -8,6 +8,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs14.x
+  profile: serverless-workshop
 
 functions:
   get-index:
