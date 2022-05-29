@@ -1,0 +1,18 @@
+service: serverless-workshop
+
+frameworkVersion: '3'
+
+custom:
+  name: Ethan Miller
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  get-index:
+    handler: functions/get-index.handler
+    events:
+      - http:
+          path: /
+          method: get
