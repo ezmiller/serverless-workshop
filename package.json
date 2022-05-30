@@ -10,9 +10,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless": "^3.18.2"
+    "cfn-resolver-lib": "^1.1.7",
+    "dotenv": "^16.0.1",
+    "serverless": "^3.18.2",
+    "serverless-export-env": "^2.1.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.1145.0"
+    "aws-sdk": "^2.1145.0",
+    "aws4": "^1.11.0",
+    "axios": "^0.27.2",
+    "mustache": "^4.2.0"
   }
 }
