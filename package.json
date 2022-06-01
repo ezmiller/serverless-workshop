@@ -10,15 +10,23 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "awscred": "^1.5.0",
     "cfn-resolver-lib": "^1.1.7",
+    "cheerio": "^1.0.0-rc.11",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
+    "jest": "^28.1.0",
     "serverless": "^3.18.2",
     "serverless-export-env": "^2.1.0"
   },
   "dependencies": {
+    "@types/jest": "^27.5.2",
     "aws-sdk": "^2.1145.0",
     "aws4": "^1.11.0",
     "axios": "^0.27.2",
-    "mustache": "^4.2.0"
+    "D": "^1.0.0",
+    "lodash": "^4.17.21",
+    "mustache": "^4.2.0",
+    "serverless-api-gateway-throttling": "^1.2.2"
   }
 }
