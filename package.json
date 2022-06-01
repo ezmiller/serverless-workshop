@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "seedRestaurants": "cross-env AWS_PROFILE=serverless-workshop node seed-restaurants.js",
+    "dotEnv": "sls export-env --all",
+    "test": "npm run dotEnv && jest"
   },
   "keywords": [],
   "author": "",

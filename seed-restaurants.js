@@ -59,6 +59,8 @@ const req = {
   },
 };
 
+console.log(`Will try to write to dynamoDB @ ${process.env.restaurants_table}`);
+
 dynamodb
   .batchWrite(req)
   .promise()

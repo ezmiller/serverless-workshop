@@ -14,9 +14,10 @@ custom:
 
 provider:
   name: aws
+  region: us-east-1 
   runtime: nodejs14.x
   profile: serverless-workshop
-  endpointType: REGIONAL
+  # endpointType: REGIONAL
   iam:
     role:
       statements:
@@ -35,7 +36,12 @@ functions:
           path: /
           method: get
     environment:
-      restaurants_api: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${sls:stage}/restaurants
+      restaurants_api:
+        Fn::Join:
+          - ''
+          - - https://
+            - !Ref ApiGatewayRestApi
+            - .execute-api.${self:provider.region}.amazonaws.com/${sls:stage}/restaurants
       cognito_user_pool_id: !Ref CognitoUserPool
       cognito_client_id: !Ref WebCognitoUserPoolClient
   get-restaurants:
@@ -44,7 +50,7 @@ functions:
       - http:
           path: /restaurants
           method: get
-          authorizer: aws_iam
+          # authorizer: aws_iam
     environment:
       restaurants_table: !Ref RestaurantsTable
   search-restaurants:
@@ -54,9 +60,9 @@ functions:
           path: /restaurants/search
           method: post
           authorizer:
-                    name: CognitoAuthorizer
-                    type: COGNITO_USER_POOLS
-                    arn: !GetAtt CognitoUserPool.Arn
+            name: CognitoAuthorizer
+            type: COGNITO_USER_POOLS
+            arn: !GetAtt CognitoUserPool.Arn
     environment:
       restaurants_table: !Ref RestaurantsTable
 
@@ -126,53 +132,53 @@ resources:
             Required: true
             StringAttributeConstraints:
               MinLength: "1"
-    3hCachePolicy:
-      Type: AWS::CloudFront::CachePolicy
-      Properties:
-        CachePolicyConfig:
-          Comment: Cache for 3h
-          Name: !Ref AWS::StackName
-          DefaultTTL: 10800
-          MaxTTL: 10800
-          MinTTL: 10800
-          ParametersInCacheKeyAndForwardedToOrigin:
-            CookiesConfig:
-              CookieBehavior: none
-            EnableAcceptEncodingBrotli: false
-            EnableAcceptEncodingGzip: false
-            HeadersConfig:
-              HeaderBehavior: whitelist
-              Headers:
-                - x-forwarded-for
-            QueryStringsConfig:
-              QueryStringBehavior: whitelist
-              QueryStrings:
-                - allowed_query_string_param
-    CloudFrontDistribution:
-      Type: AWS::CloudFront::Distribution
-      Properties:
-        DistributionConfig:
-          Enabled: true 
-          Origins:
-            - Id: Primary
-              DomainName: !Sub "${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com"
-              OriginPath: /${sls:stage}
-              CustomOriginConfig:
-                HTTPSPort: 443
-                OriginProtocolPolicy: https-only
-                OriginSSLProtocols:
-                  - TLSv1.2
-          DefaultCacheBehavior:
-            AllowedMethods:
-              - GET
-              - HEAD
-            CachedMethods:
-              - GET
-              - HEAD
-            Compress: true
-            TargetOriginId: Primary
-            ViewerProtocolPolicy: redirect-to-https
-            CachePolicyId: !Ref 3hCachePolicy
+    # 3hCachePolicy:
+    #   Type: AWS::CloudFront::CachePolicy
+    #   Properties:
+    #     CachePolicyConfig:
+    #       Comment: Cache for 3h
+    #       Name: !Ref AWS::StackName
+    #       DefaultTTL: 10800
+    #       MaxTTL: 10800
+    #       MinTTL: 10800
+    #       ParametersInCacheKeyAndForwardedToOrigin:
+    #         CookiesConfig:
+    #           CookieBehavior: none
+    #         EnableAcceptEncodingBrotli: false
+    #         EnableAcceptEncodingGzip: false
+    #         HeadersConfig:
+    #           HeaderBehavior: whitelist
+    #           Headers:
+    #             - x-forwarded-for
+    #         QueryStringsConfig:
+    #           QueryStringBehavior: whitelist
+    #           QueryStrings:
+    #             - allowed_query_string_param
+    # CloudFrontDistribution:
+    #   Type: AWS::CloudFront::Distribution
+    #   Properties:
+    #     DistributionConfig:
+    #       Enabled: true 
+    #       Origins:
+    #         - Id: Primary
+    #           DomainName: !Sub "${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com"
+    #           OriginPath: /${sls:stage}
+    #           CustomOriginConfig:
+    #             HTTPSPort: 443
+    #             OriginProtocolPolicy: https-only
+    #             OriginSSLProtocols:
+    #               - TLSv1.2
+    #       DefaultCacheBehavior:
+    #         AllowedMethods:
+    #           - GET
+    #           - HEAD
+    #         CachedMethods:
+    #           - GET
+    #           - HEAD
+    #         Compress: true
+    #         TargetOriginId: Primary
+    #         ViewerProtocolPolicy: redirect-to-https
+    #         CachePolicyId: !Ref 3hCachePolicy
 
   Outputs:
     RestaurantsTableName:
