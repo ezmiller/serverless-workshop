@@ -11,6 +11,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   profile: serverless-workshop
+  endpointType: REGIONAL
   iam:
     role:
       statements:
@@ -120,6 +121,53 @@ resources:
             Required: true
             StringAttributeConstraints:
               MinLength: "1"
+    3hCachePolicy:
+      Type: AWS::CloudFront::CachePolicy
+      Properties:
+        CachePolicyConfig:
+          Comment: Cache for 3h
+          Name: !Ref AWS::StackName
+          DefaultTTL: 10800
+          MaxTTL: 10800
+          MinTTL: 10800
+          ParametersInCacheKeyAndForwardedToOrigin:
+            CookiesConfig:
+              CookieBehavior: none
+            EnableAcceptEncodingBrotli: false
+            EnableAcceptEncodingGzip: false
+            HeadersConfig:
+              HeaderBehavior: whitelist
+              Headers:
+                - x-forwarded-for
+            QueryStringsConfig:
+              QueryStringBehavior: whitelist
+              QueryStrings:
+                - allowed_query_string_param
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Enabled: true 
+          Origins:
+            - Id: Primary
+              DomainName: !Sub "${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com"
+              OriginPath: /${sls:stage}
+              CustomOriginConfig:
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
+                OriginSSLProtocols:
+                  - TLSv1.2
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - GET
+              - HEAD
+            CachedMethods:
+              - GET
+              - HEAD
+            Compress: true
+            TargetOriginId: Primary
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: !Ref 3hCachePolicy
 
   Outputs:
     RestaurantsTableName:
