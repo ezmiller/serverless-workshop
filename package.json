@@ -6,7 +6,7 @@
   "scripts": {
     "seedRestaurants": "cross-env AWS_PROFILE=serverless-workshop node seed-restaurants.js",
     "dotEnv": "sls export-env --all",
-    "test": "npm run dotEnv && jest"
+    "test": "npm run dotEnv && cross-env TEST_MODE=handler jest"
   },
   "keywords": [],
   "author": "",
