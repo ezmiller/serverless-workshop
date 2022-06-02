@@ -14,7 +14,7 @@ const viaHandler = async (event, functionName) => {
   const response = await handler(event, context);
   const contentType = _.get(
     response,
-    "headers.Content-Type",
+    "headers.content-type",
     "application/json"
   );
   if (response.body && contentType === "application/json") {
