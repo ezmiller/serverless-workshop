@@ -15,6 +15,7 @@ custom:
 provider:
   name: aws
   region: us-east-1 
+  stage: dev
   runtime: nodejs14.x
   profile: serverless-workshop
   # endpointType: REGIONAL
@@ -57,7 +58,7 @@ functions:
       - http:
           path: /restaurants
           method: get
-          authorizer: aws_iam
+          # authorizer: aws_iam
     environment:
       restaurants_table: !Ref RestaurantsTable
   search-restaurants:
