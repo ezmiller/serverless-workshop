@@ -50,7 +50,7 @@ functions:
       - http:
           path: /restaurants
           method: get
-          # authorizer: aws_iam
+          authorizer: aws_iam
     environment:
       restaurants_table: !Ref RestaurantsTable
   search-restaurants:

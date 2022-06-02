@@ -29,7 +29,7 @@ const getRestaurants = async () => {
     path: url.pathname,
   };
 
-  // aws4.sign(opts);
+  aws4.sign(opts);
 
   const httpReq = http.get(restaurantsApiRoot, {
     headers: opts?.headers,
