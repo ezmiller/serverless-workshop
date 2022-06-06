@@ -12,10 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        name: Setup Node
         with:
-          - node-version: 16
-          - cache: 'npm'
+          node-version: 16
+          cache: 'npm'
       - name: Install dependencies
         run: npm ci # use ci command b/c it's safer 
       - name: Run integration tests
