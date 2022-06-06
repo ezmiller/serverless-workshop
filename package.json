@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "seedRestaurants": "cross-env AWS_PROFILE=serverless-workshop node seed-restaurants.js",
+    "seedRestaurants": "node seed-restaurants.js",
     "dotEnv": "sls export-env --all",
     "test": "npm run dotEnv && cross-env TEST_MODE=handler jest",
     "acceptance": "npm run dotEnv && cross-env TEST_MODE=http jest"
