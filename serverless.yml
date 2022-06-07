@@ -147,6 +147,18 @@ resources:
             Required: true
             StringAttributeConstraints:
               MinLength: "1"
+    ServiceUrlParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Type: String
+        Name: /${self:service}/${self:provider.stage}/serviceUrl
+        Value:
+          Fn::Join:
+            - ''
+            - - https://
+              - !Ref ApiGatewayRestApi
+              - .execute-api.${self:provider.region}.amazonaws.com/${self:provider.stage}
+
     # 3hCachePolicy:
     #   Type: AWS::CloudFront::CachePolicy
     #   Properties:
